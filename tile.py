@@ -15,7 +15,7 @@ maxx = 1.14551e+06
 maxy = 7.9768e+06
 height = 256 * 2
 width = 256 * 2
-min_row_col = 5
+min_row_col = 1
 
 
 def create_bbox(minx=None, miny=None, maxx=None, maxy=None):
@@ -98,7 +98,7 @@ def save_tiles(links):
 
     for link in links:
         response = requests.get(link['url'], stream=True)
-        filename = directory + '/%s_%s.png' % (link['x'], link['y'])
+        filename = directory + '/%03d_%03d.png' % (link['x'], link['y'])
         with open(filename, 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
 

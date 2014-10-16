@@ -4,18 +4,27 @@ import math
 import os
 import shutil
 import requests
+from PIL import Image
+from io import BytesIO
 
-
-wms_url = 'http://openwms.statkart.no/skwms1/wms.topo2?'
-layer_name = 'topo2_WMS'
+wms_url = 'http://wms.geonorge.no/skwms1/wms.barents_watch?'
+layer_name = 'barents_watch_WMS'
 srs = 'EPSG:32633'
-minx = -127998
+
+minx = -1500000.0
+miny = 5800000.0
+maxx = 2045984.0
+maxy = 9045984.0
+
+'''
+minx = -27998
 miny = 6.37792e+06
 maxx = 1.14551e+06
 maxy = 7.9768e+06
+'''
 height = 256 * 2
 width = 256 * 2
-min_row_col = 1
+min_row_col = 10
 
 
 def create_bbox(minx=None, miny=None, maxx=None, maxy=None):
@@ -90,8 +99,35 @@ def create_tile_links(grid):
     return tiles
 
 
-def save_tiles(links):
-    directory = os.getcwd() + '/tiles'
+def create_xyz_tile_links(minx, maxx, miny, maxy, base, z):
+    def get_xyz_url(base, x, y, z):
+        return '%s/%s/%s/%s.png' % (base, z, x, y)
+    tiles = []
+    for x, tx in enumerate(range(minx, maxx + 1)):
+        for y, ty in enumerate(range(miny, maxy + 1)):
+            url = get_xyz_url(base, tx, ty, z)
+            tiles.append({
+                'x': x,
+                'y': y,
+                'url': url
+            })
+    return tiles
+
+
+def save_image(filename, response, resize):
+    with open(filename, 'wb') as out_file:
+
+        if resize:
+            image = Image.open(BytesIO(response.content))
+            image = image.resize((width, height))
+            image.save(filename)
+            
+        else:
+            shutil.copyfileobj(response.raw, out_file)
+
+
+def save_tiles(links, dir='tiles', resize=False):
+    directory = os.getcwd() + '/' + dir
     if os.path.exists(directory):
         shutil.rmtree(directory)
     os.makedirs(directory)
@@ -99,11 +135,15 @@ def save_tiles(links):
     for link in links:
         response = requests.get(link['url'], stream=True)
         filename = directory + '/%03d_%03d.png' % (link['x'], link['y'])
-        with open(filename, 'wb') as out_file:
-            shutil.copyfileobj(response.raw, out_file)
+        save_image(filename, response, resize)
 
 
 if __name__ == '__main__':
+
+    '''
     grid = create_grid(minx, miny, maxx, maxy, min_row_col)
     tile_links = create_tile_links(grid)
     save_tiles(tile_links)
+    '''
+    tile_links = create_xyz_tile_links(32, 37, 13, 19, 'http://a.tile.stamen.com/toner', 6)
+    save_tiles(tile_links, dir='xyz', resize=True)

@@ -2,7 +2,6 @@
 import os
 import glob
 
-
 from PIL import Image as PilImage
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import A4
@@ -13,8 +12,9 @@ from reportlab.lib.units import inch
 
 
 def is_blank(infile):
-    image = PilImage.open(infile)
-    return len(image.getcolors()) < 2
+    #image = PilImage.open(infile)
+    #return len(image.getcolors()) < 2
+    return False
 
 
 def create_page(elements, infile):
@@ -40,7 +40,7 @@ def create_pdf(images, name):
     doc.build(elements)
 
 if __name__ == '__main__':
-    directory = os.getcwd() + '/tiles'
+    directory = os.getcwd() + '/xyz'
     os.chdir(directory)
     files = [directory + '/' + png for png in glob.glob('*.png')]
 

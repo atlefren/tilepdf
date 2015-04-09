@@ -1,3 +1,5 @@
 tiles/
 venv/
 xyz/
+xyz2/
+*.pyc

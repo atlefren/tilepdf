@@ -66,12 +66,12 @@ def sort_tiles(tiles):
     return sorted_tiles
 
 
-def create_pdf(images, name):
+def create_pdf(directory, name):
 
-    tiles = sort_tiles(images)
+    tiles = sort_tiles(get_files(directory))
 
-    height = 4 # len(tiles[0])
-    width = 4 # len(tiles)
+    height = len(tiles[0])
+    width = len(tiles)
 
     cols = width / 2
     rows = height / 2
@@ -101,11 +101,11 @@ def create_pdf(images, name):
             print_image(c, image, filename)
 
 
-if __name__ == '__main__':
-    directory = os.getcwd() + '/xyz'
+def get_files(dir):
+    directory = os.getcwd() + '/' + dir
     os.chdir(directory)
     files = [directory + '/' + png for png in glob.glob('*.png')]
+    return sorted(file for file in files)
 
-    files = sorted(file for file in files)
-
-    create_pdf(files, 'map')
+if __name__ == '__main__':
+    create_pdf('xyz', 'map')

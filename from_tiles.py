@@ -39,5 +39,5 @@ def save_tiles(links, dir='tiles'):
 
 
 if __name__ == '__main__':
-    tile_links = create_xyz_tile_links(34644, 34672, 17701, 17721, 'http://www.webatlas.no/maptiles/tiles/webatlas-standard-vektor/wa_grid', 16)
+    tile_links = create_xyz_tile_links(34644, 34672, 17701, 17721, '', 16)
     save_tiles(tile_links, dir='xyz')

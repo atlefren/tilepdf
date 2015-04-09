@@ -149,11 +149,7 @@ if __name__ == '__main__':
     '''
     #tile_links = create_xyz_tile_links(32, 37, 13, 19, 'http://a.tile.stamen.com/toner', 6)
 
-    tile_links = create_xyz_tile_links(34644, 34672, 17701, 17721, 'http://www.webatlas.no/maptiles/tiles/webatlas-standard-vektor/wa_grid', 16)
+    tile_links = create_xyz_tile_links(34644, 34672, 17701, 17721, '', 16)
 
-    #tile_links = create_xyz_tile_links(34644, 34646, 17710, 17712, 'http://www.webatlas.no/maptiles/tiles/webatlas-standard-vektor/wa_grid', 16)
+    #tile_links = create_xyz_tile_links(34644, 34646, 17710, 17712, '', 16)
     save_tiles(tile_links, dir='xyz', resize=False)
-
-    #17701, 17720
-
-    #http://www.webatlas.no/maptiles/tiles/webatlas-standard-vektor/wa_grid/16/34645/17707.png

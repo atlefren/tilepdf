@@ -76,10 +76,10 @@ def get_bounds(bbox, zoom):
     return (minx, maxx, miny, maxy)
 
 if __name__ == '__main__':
-    zoom = 15
-    url = 'http://www.webatlas.no/maptiles/tiles/webatlas-standard-vektor/wa_grid'
+    zoom = 13
+    url = 'http://a.tile.stamen.com/toner'
     bbox = '10.307612896,63.4103527915,10.4711933136,63.4574290025'
-    directory = 'xyz2'
+    directory = 'xyz'
     filename = 'generated'
 
     (minx, maxx, miny, maxy) = get_bounds(bbox, zoom)

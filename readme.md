@@ -5,7 +5,7 @@ Usage
 -----
 1. setup a venv
 2. pip install -r requirements.txt
-3. edit tile.py
-4. python tile.py
-5. python topdf.py
-6. look at tiles/map.pdf
+3. edit generate_pdf.py (bbox, url and zoom)
+4. python generate_pdf.py
+5. look at xyz2/generated_new.pdf
+6. print without margins and assemble

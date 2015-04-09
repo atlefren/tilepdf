@@ -103,8 +103,10 @@ def create_xyz_tile_links(minx, maxx, miny, maxy, base, z):
     def get_xyz_url(base, x, y, z):
         return '%s/%s/%s/%s.png' % (base, z, x, y)
     tiles = []
-    for x, tx in enumerate(range(minx, maxx + 1)):
-        for y, ty in enumerate(range(miny, maxy + 1)):
+    for x, tx in enumerate(range(minx, maxx)):
+        print x
+        for y, ty in enumerate(range(miny, maxy)):
+            print y
             url = get_xyz_url(base, tx, ty, z)
             tiles.append({
                 'x': x,
@@ -145,5 +147,13 @@ if __name__ == '__main__':
     tile_links = create_tile_links(grid)
     save_tiles(tile_links)
     '''
-    tile_links = create_xyz_tile_links(32, 37, 13, 19, 'http://a.tile.stamen.com/toner', 6)
-    save_tiles(tile_links, dir='xyz', resize=True)
+    #tile_links = create_xyz_tile_links(32, 37, 13, 19, 'http://a.tile.stamen.com/toner', 6)
+
+    tile_links = create_xyz_tile_links(34644, 34672, 17701, 17721, 'http://www.webatlas.no/maptiles/tiles/webatlas-standard-vektor/wa_grid', 16)
+
+    #tile_links = create_xyz_tile_links(34644, 34646, 17710, 17712, 'http://www.webatlas.no/maptiles/tiles/webatlas-standard-vektor/wa_grid', 16)
+    save_tiles(tile_links, dir='xyz', resize=False)
+
+    #17701, 17720
+
+    #http://www.webatlas.no/maptiles/tiles/webatlas-standard-vektor/wa_grid/16/34645/17707.png

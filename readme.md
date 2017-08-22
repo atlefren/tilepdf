@@ -15,6 +15,7 @@ paper, so the bbox is rounded up to get an even number of tiles in x and y.
 
 One issue is that most printers will add a margin to your printed pages..
 
+Optionally: this library can also be used to stitch togehter to a large image
 
 Usage
 -----
@@ -22,5 +23,14 @@ Usage
 2. pip install -r requirements.txt
 3. edit generate_pdf.py (bbox, url and zoom)
 4. python generate_pdf.py
-5. look at xyz/generated_new.pdf
+5. look at generated.pdf
 6. print without margins and assemble
+
+
+Create image
+------------
+1. setup a venv
+2. pip install -r requirements.txt
+3. edit generate_imagef.py (bbox, url and width, height)
+4. python generate_image.py
+5. look at generated.pdf

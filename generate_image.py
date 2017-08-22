@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from util import parse_bbox, latlon2tile, get_bounds
+import math
+
+from util import parse_bbox, latlon2tile, get_bounds, mm_to_pixel
 from tile import (create_xyz_tile_links, download_tiles, get_files_from_disk,
                   sort_tiles)
 from image_operations import combine_tiles
@@ -28,10 +30,32 @@ def determine_zoom(bbox, min_width, min_height):
     raise Error('could not determine zoom')
 
 
-def create_image(directory, filename):
+def crop_image(image, w_offset, h_offset):
+    left_offset = int(math.ceil(w_offset / 2.0))
+    right_offset = int(math.floor(w_offset / 2.0))
+    top_offset = int(math.ceil(h_offset / 2.0))
+    bottom_offset = int(math.floor(h_offset / 2.0))
+    print left_offset, right_offset
+    return image.crop((
+        left_offset,
+        top_offset,
+        int(image.size[0]) - right_offset,
+        int(image.size[1]) - bottom_offset
+    ))
+
+
+def create_image(directory, filename, dpi, pixel_width, pixel_height):
     tiles = sort_tiles(get_files_from_disk(directory))
     image = combine_tiles(tiles)
-    image.save(filename)
+
+    w_offset = image.size[0] - pixel_width
+    h_offset = image.size[1] - pixel_height
+
+    print w_offset, h_offset
+
+    image = crop_image(image, w_offset, h_offset)
+
+    image.save(filename, dpi=(dpi, dpi))
 
 
 if __name__ == '__main__':
@@ -39,11 +63,18 @@ if __name__ == '__main__':
 
     url = 'http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}'
     bbox = '9.5997073555,63.1427121204,11.0326168633,63.7064078339'
-    width = 2000
-    height = 2000
-    filename = 'generated.png'
+    width = 330  # mm
+    height = 330  # mm
+    dpi = 300
+    filename = 'generated2.png'
 
-    zoom = determine_zoom(bbox, width, height)
+    pixel_width = mm_to_pixel(width, dpi)
+    pixel_height = mm_to_pixel(height, dpi)
+
+    print 'Generating image of size %sx%s mm at %s dpi' % (width, height, dpi)
+    print 'Resolves to %sx%s pixels' % (pixel_width, pixel_height)
+
+    zoom = determine_zoom(bbox, pixel_width, pixel_height)
     (minx, maxx, miny, maxy) = get_bounds(bbox, zoom)
     cols = (maxx - minx) + 1
     rows = (maxy - miny) + 1
@@ -58,6 +89,6 @@ if __name__ == '__main__':
 
     tile_links = create_xyz_tile_links(url, minx, maxx, miny, maxy, zoom)
 
-    print 'downloading..'
+    print 'Downloading %s tiles..' % len(tile_links)
     download_tiles(tile_links, directory)
-    create_image(directory, filename)
+    create_image(directory, filename, dpi, pixel_width, pixel_height)

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
+import math
+
 import requests
 
 from tileutils import GlobalMercator
@@ -11,6 +13,11 @@ mercator = GlobalMercator()
 
 def parse_bbox(bbox):
     return tuple([float(c) for c in bbox.split(',')])
+
+
+def mm_to_pixel(mm, dpi):
+    inches = float(mm) / 25.4
+    return int(math.ceil(inches * float(dpi)))
 
 
 def get_even(min_val, max_val):

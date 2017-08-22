@@ -9,8 +9,6 @@ def combine_tiles(tiles):
     width = cols * 256
     height = rows * 256
 
-    print width, height
-
     merged = PilImage.new('RGB', (width, height))
     for row in range(0, rows):
         for col in range(0, cols):

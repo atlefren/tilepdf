@@ -37,6 +37,7 @@ def download_tiles(links, dir='tiles'):
         pass
 
     for link in links:
+        print 'downloading %s' % link['url']
         response = requests.get(link['url'], stream=True)
         filename = os.path.join(directory, '%03d_%03d.png' % (link['x'], link['y']))
         save_image(filename, response)
